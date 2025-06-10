@@ -23,7 +23,6 @@ import python from "highlight.js/lib/languages/python";
 import json from "highlight.js/lib/languages/json";
 import bash from "highlight.js/lib/languages/bash";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Bold,
   Italic,
@@ -46,10 +45,7 @@ import {
   Underline as UnderlineIcon,
   Highlighter,
   Palette,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  ChevronDown,
+
 } from "lucide-react";
 import SlashCommand from "./slash-command";
 
@@ -78,7 +74,7 @@ export default function RichTextEditor({
 }: RichTextEditorProps) {
   const [showToolbar, setShowToolbar] = useState(true);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showFontSize, setShowFontSize] = useState(false);
+ 
 
   const editor = useEditor({
     extensions: [

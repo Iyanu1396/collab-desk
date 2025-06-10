@@ -1023,12 +1023,16 @@ export default function CollaborativePage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleViewPlaybook(playbook)}
-                        className="flex-1 min-w-[100px] bg-white/80 backdrop-blur-sm hover:bg-blue-50 hover:border-blue-400 hover:text-blue-700 transition-all duration-300 font-semibold"
-                        disabled={!playbook.is_published}
+                        onClick={() =>
+                          window.open(
+                            `/dashboard/collaborative/${playbook.slug}`,
+                            "_blank"
+                          )
+                        }
+                        className="flex-1 min-w-[120px] bg-white/80 backdrop-blur-sm hover:bg-blue-50 hover:border-blue-400 hover:text-blue-700 transition-all duration-300 font-semibold"
                       >
                         <Eye className="w-4 h-4 mr-2" />
-                        View
+                        Private View
                       </Button>
                       <Button
                         variant="outline"
@@ -1036,11 +1040,11 @@ export default function CollaborativePage() {
                         onClick={() =>
                           window.open(`/playbook/${playbook.slug}`, "_blank")
                         }
-                        className="px-4 bg-white/80 backdrop-blur-sm hover:bg-green-50 hover:border-green-400 hover:text-green-700 transition-all duration-300"
+                        className="flex-1 min-w-[120px] bg-white/80 backdrop-blur-sm hover:bg-green-50 hover:border-green-400 hover:text-green-700 transition-all duration-300 font-semibold"
                         disabled={!playbook.is_published}
-                        title="Open Public View"
                       >
-                        <Globe className="w-4 h-4" />
+                        <Globe className="w-4 h-4 mr-2" />
+                        Public View
                       </Button>
                       <Button
                         variant="outline"
@@ -1055,13 +1059,18 @@ export default function CollaborativePage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleTogglePublish(playbook)}
-                        className="px-4 bg-white/80 backdrop-blur-sm hover:bg-emerald-50 hover:border-emerald-400 hover:text-emerald-700 transition-all duration-300"
-                        title={playbook.is_published ? "Unpublish" : "Publish"}
+                        className="flex-1 min-w-[100px] bg-white/80 backdrop-blur-sm hover:bg-emerald-50 hover:border-emerald-400 hover:text-emerald-700 transition-all duration-300 font-semibold"
                       >
                         {playbook.is_published ? (
-                          <EyeOff className="w-4 h-4" />
+                          <>
+                            <EyeOff className="w-4 h-4 mr-2" />
+                            Unpublish
+                          </>
                         ) : (
-                          <Globe className="w-4 h-4" />
+                          <>
+                            <Globe className="w-4 h-4 mr-2" />
+                            Publish
+                          </>
                         )}
                       </Button>
                       {isOwner(playbook) && (
@@ -1070,19 +1079,19 @@ export default function CollaborativePage() {
                             variant="outline"
                             size="sm"
                             onClick={() => handleAddCollaborator(playbook.id)}
-                            className="px-4 bg-white/80 backdrop-blur-sm hover:bg-purple-50 hover:border-purple-400 hover:text-purple-700 transition-all duration-300"
-                            title="Add Collaborator"
+                            className="flex-1 min-w-[120px] bg-white/80 backdrop-blur-sm hover:bg-purple-50 hover:border-purple-400 hover:text-purple-700 transition-all duration-300 font-semibold"
                           >
-                            <UserPlus className="w-4 h-4" />
+                            <UserPlus className="w-4 h-4 mr-2" />
+                            Add Member
                           </Button>
                           <Button
                             variant="outline"
                             size="sm"
                             onClick={() => handleDeleteClick(playbook)}
-                            className="px-4 bg-white/80 backdrop-blur-sm text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-400 transition-all duration-300"
-                            title="Delete Playbook"
+                            className="flex-1 min-w-[100px] bg-white/80 backdrop-blur-sm text-red-600 hover:text-red-700 hover:bg-red-50 hover:border-red-400 transition-all duration-300 font-semibold"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete
                           </Button>
                         </>
                       )}

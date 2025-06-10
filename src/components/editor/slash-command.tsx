@@ -158,7 +158,7 @@ const SlashCommandsList = forwardRef((props: SuggestionProps, ref) => {
     {
       title: "Image",
       description: "Upload an image from your computer",
-      icon: <Image className="w-4 h-4" />,
+      icon: <Image className="w-4 h-4"  />,
       command: (editor, range) => {
         editor.chain().focus().deleteRange(range).run();
         const url = window.prompt("Enter the URL of the image:");
@@ -300,7 +300,7 @@ const SlashCommandsList = forwardRef((props: SuggestionProps, ref) => {
       >
         <div className="flex items-center gap-2 text-gray-500">
           <Search className="w-4 h-4" />
-          <span className="text-sm">No commands found for "{props.query}"</span>
+          <span className="text-sm">No commands found for &quot;{props.query}&quot;</span>
         </div>
       </motion.div>
     );

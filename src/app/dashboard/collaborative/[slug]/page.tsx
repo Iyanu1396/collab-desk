@@ -469,10 +469,10 @@ export default function CollaborativePlaybookPage() {
 
       <div className="flex relative z-10">
         {/* Main Content */}
-        <div className={`flex-1 ${isFullscreen ? "w-full" : "lg:mr-80"}`}>
+        <div className={`flex-1 ${isFullscreen ? "w-full" : "lg:mr-96"}`}>
           <div
             className={`${
-              isFullscreen ? "max-w-6xl" : "max-w-4xl"
+              isFullscreen ? "max-w-7xl" : "max-w-5xl"
             } mx-auto p-6 lg:p-8`}
           >
             <motion.div
@@ -489,15 +489,20 @@ export default function CollaborativePlaybookPage() {
                   transition={{ delay: 0.2, duration: 0.6 }}
                   className="flex items-center gap-4"
                 >
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleBack}
-                    className="group bg-white/80 backdrop-blur-sm border-white/40 hover:bg-white/90 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-                  >
-                    <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-                    Back to Collaborative
-                  </Button>
+                  <div className="flex items-center gap-4">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleBack}
+                      className="group bg-white/90 backdrop-blur-sm border-slate-200/60 hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                      <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+                      Back to Playbooks
+                    </Button>
+                    
+                    {/* Admin Quick Actions */}
+                   
+                  </div>  
                 </motion.div>
 
                 <div className="space-y-6">
@@ -523,7 +528,7 @@ export default function CollaborativePlaybookPage() {
                     </motion.div>
                   )}
 
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.6 }}
@@ -531,7 +536,7 @@ export default function CollaborativePlaybookPage() {
                   >
                     {/* Enhanced Owner/Collaborator Badge */}
                     {isOwner ? (
-                      <motion.span 
+                      <motion.span
                         whileHover={{ scale: 1.05 }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                       >
@@ -539,7 +544,7 @@ export default function CollaborativePlaybookPage() {
                         Owner
                       </motion.span>
                     ) : (
-                      <motion.span 
+                      <motion.span
                         whileHover={{ scale: 1.05 }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                       >
@@ -571,16 +576,18 @@ export default function CollaborativePlaybookPage() {
                     </motion.span>
 
                     {/* Enhanced Collaborators Count */}
-                    <motion.span 
+                    <motion.span
                       whileHover={{ scale: 1.05 }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       <Users className="w-4 h-4" />
-                      {playbook.collaborators?.length + 1 || 0} collaborator
-                      {(playbook.collaborators?.length + 1 || 0) !== 1 ? "s" : ""}
+                      {(playbook.collaborators?.length || 0) + 1} collaborator
+                      {(playbook.collaborators?.length || 0) + 1 !== 1
+                        ? "s"
+                        : ""}
                     </motion.span>
 
-                    <motion.div 
+                    <motion.div
                       whileHover={{ scale: 1.05 }}
                       className="flex items-center text-sm font-medium text-gray-700 bg-white/80 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300"
                     >
@@ -632,10 +639,7 @@ export default function CollaborativePlaybookPage() {
                     {playbook.is_published && (
                       <Button
                         onClick={() =>
-                          window.open(
-                            `/dashboard/collaborative/${playbook.slug}`,
-                            "_blank"
-                          )
+                          window.open(`/playbook/${playbook.slug}`, "_blank")
                         }
                         variant="outline"
                         className="bg-white/80 backdrop-blur-sm border-white/40 hover:bg-white/90"
@@ -759,191 +763,369 @@ export default function CollaborativePlaybookPage() {
           </div>
         </div>
 
-        {/* Sidebar - Hide in fullscreen mode */}
+        {/* Enhanced Admin Sidebar - Hide in fullscreen mode */}
         {!isFullscreen && (
           <motion.div
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="hidden lg:block w-80 bg-white/40 backdrop-blur-md border-l border-white/40 p-6 space-y-6 overflow-y-auto shadow-2xl"
+            className="hidden lg:block w-96 bg-gradient-to-b from-slate-50/90 to-white/90 backdrop-blur-xl border-l border-slate-200/60 shadow-2xl overflow-y-auto"
           >
-            {/* Collaborators */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Users className="w-5 h-5 text-purple-600" />
-                Team Members ({(playbook.collaborators?.length || 0) + 1})
-              </h3>
+            {/* Admin Header */}
+            <div className="sticky top-0 bg-gradient-to-r from-slate-100/95 to-white/95 backdrop-blur-xl border-b border-slate-200/60 p-6 z-10">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                  {isOwner ? (
+                    <Crown className="w-6 h-6 text-white" />
+                  ) : (
+                    <Users className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-slate-900">
+                    {isOwner ? "Admin Panel" : "Collaboration"}
+                  </h2>
+                  <p className="text-sm text-slate-600">
+                    {isOwner ? "Manage your playbook" : "View team details"}
+                  </p>
+                </div>
+              </div>
+            </div>
 
-              {/* Owner */}
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm rounded-xl border border-blue-200/50 shadow-lg">
-                  <div className="relative">
-                    {playbook.owner_profile?.avatar_url ? (
-                      <img
-                        src={playbook.owner_profile.avatar_url}
-                        alt={`${
-                          playbook.owner_profile.username ||
-                          playbook.owner_profile.email ||
-                          "Owner"
-                        }`}
-                        className="w-12 h-12 rounded-full object-cover ring-4 ring-blue-200"
-                      />
+            <div className="p-6 space-y-8">
+              {/* Team Management Section */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    {isOwner ? (
+                      <>
+                        <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                          <Crown className="w-4 h-4 text-white" />
+                        </div>
+                        Manage Team
+                      </>
                     ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center ring-4 ring-blue-200">
-                        {playbook.owner_profile?.username ? (
-                          <span className="text-white font-bold text-lg">
-                            {playbook.owner_profile.username
-                              .charAt(0)
-                              .toUpperCase()}
-                          </span>
-                        ) : playbook.owner_profile?.email ? (
-                          <span className="text-white font-bold text-lg">
-                            {playbook.owner_profile.email
-                              .charAt(0)
-                              .toUpperCase()}
-                          </span>
-                        ) : (
-                          <Crown className="w-6 h-6 text-white" />
-                        )}
-                      </div>
+                      <>
+                        <Users className="w-5 h-5 text-indigo-600" />
+                        Team Members
+                      </>
                     )}
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
-                      <Crown className="w-3 h-3 text-white" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-lg">
-                      {isOwner ? (
-                        <span>
-                          {playbook.owner_profile?.username ||
-                            playbook.owner_profile?.email ||
-                            "You"}{" "}
-                          <span className="text-blue-600 font-medium">
-                            (you)
-                          </span>
-                        </span>
-                      ) : (
-                        playbook.owner_profile?.username ||
-                        playbook.owner_profile?.email ||
-                        "Owner"
-                      )}
-                    </p>
-                    <p className="text-sm text-blue-600 font-medium flex items-center gap-1">
-                      <Crown className="w-3 h-3" />
-                      Owner
-                    </p>
+                  </h3>
+                  <div className="bg-gradient-to-r from-indigo-100 to-purple-100 px-3 py-1 rounded-full">
+                    <span className="text-sm font-semibold text-indigo-700">
+                      {(playbook.collaborators?.length || 0) + 1} members
+                    </span>
                   </div>
                 </div>
 
-                {/* Collaborators List */}
-                {playbook.collaborators?.map((collab, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-4 bg-gradient-to-r from-emerald-50/80 to-green-50/80 backdrop-blur-sm rounded-xl border border-emerald-200/50 shadow-lg"
-                  >
-                    {collab.profile.avatar_url ? (
-                      <img
-                        src={collab.profile.avatar_url}
-                        alt={collab.profile.username}
-                        className="w-12 h-12 rounded-full object-cover ring-4 ring-emerald-200"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center ring-4 ring-emerald-200">
-                        <span className="text-white font-bold text-lg">
-                          {collab.profile.username.charAt(0).toUpperCase()}
-                        </span>
+                {isOwner && (
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                        <Crown className="w-3 h-3 text-white" />
                       </div>
-                    )}
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-900 text-lg">
-                        {collab.profile.user_id === user?.id ? (
-                          <span>
-                            {collab.profile.username}{" "}
-                            <span className="text-emerald-600 font-medium">
-                              (you)
-                            </span>
-                          </span>
-                        ) : (
-                          collab.profile.username
-                        )}
-                      </p>
-                      <p className="text-sm text-emerald-600 font-medium flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        Collaborator
-                      </p>
+                      <span className="text-sm font-semibold text-blue-900">
+                        Admin Controls
+                      </span>
                     </div>
-                    {isOwner && collab.profile.user_id !== user?.id && (
-                      <button
-                        onClick={() =>
-                          setShowRemoveCollaboratorModal({
-                            show: true,
-                            collaborator: collab.profile,
-                          })
-                        }
-                        className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-all duration-200"
-                        title="Remove collaborator"
-                      >
-                        <UserMinus className="w-4 h-4" />
-                      </button>
-                    )}
+                    <p className="text-xs text-blue-700 mb-3">
+                      As the owner, you can add/remove collaborators and manage
+                      permissions.
+                    </p>
+                    <Button
+                      onClick={() => setShowAddCollaboratorModal(true)}
+                      size="sm"
+                      className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg"
+                    >
+                      <UserPlus className="w-4 h-4 mr-2" />
+                      Add Team Member
+                    </Button>
                   </div>
-                ))}
-              </div>
+                )}
 
-              {isOwner && (
-                <Button
-                  onClick={() => setShowAddCollaboratorModal(true)}
-                  variant="outline"
-                  size="sm"
-                  className="w-full bg-white/60 border-white/40 hover:bg-white/80 shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <UserPlus className="w-4 h-4 mr-2" />
-                  Add Collaborator
-                </Button>
-              )}
-            </div>
-
-            {/* Last Updated Info */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-purple-600" />
-                Recent Activity
-              </h3>
-
-              <div className="space-y-3">
-                <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-lg">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Calendar className="w-4 h-4" />
-                    <span className="font-medium">Last Updated</span>
-                  </div>
-                  <p className="text-gray-900 font-semibold">
-                    {formatDate(playbook.updated_at)}
-                  </p>
-                  {playbook.last_updated_by && (
-                    <div className="mt-3 pt-3 border-t border-gray-200">
-                      <div className="flex items-center gap-2 text-xs text-gray-500 mb-1">
-                        <Clock className="w-3 h-3" />
-                        <span>Updated by</span>
+                {/* Team Members List */}
+                <div className="space-y-3">
+                  {/* Owner */}
+                  <div className="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 backdrop-blur-sm rounded-xl border border-blue-200/50 shadow-lg overflow-hidden">
+                    <div className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          {playbook.owner_profile?.avatar_url ? (
+                            <img
+                              src={playbook.owner_profile.avatar_url}
+                              alt={`${
+                                playbook.owner_profile.username ||
+                                playbook.owner_profile.email ||
+                                "Owner"
+                              }`}
+                              className="w-12 h-12 rounded-full object-cover ring-3 ring-blue-200"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center ring-3 ring-blue-200">
+                              {playbook.owner_profile?.username ? (
+                                <span className="text-white font-bold text-lg">
+                                  {playbook.owner_profile.username
+                                    .charAt(0)
+                                    .toUpperCase()}
+                                </span>
+                              ) : playbook.owner_profile?.email ? (
+                                <span className="text-white font-bold text-lg">
+                                  {playbook.owner_profile.email
+                                    .charAt(0)
+                                    .toUpperCase()}
+                                </span>
+                              ) : (
+                                <Crown className="w-6 h-6 text-white" />
+                              )}
+                            </div>
+                          )}
+                          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                            <Crown className="w-3 h-3 text-white" />
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold text-slate-900 text-base truncate">
+                              {isOwner ? (
+                                <span>
+                                  {playbook.owner_profile?.username ||
+                                    playbook.owner_profile?.email ||
+                                    "You"}{" "}
+                                  <span className="text-blue-600 font-medium text-sm">
+                                    (you)
+                                  </span>
+                                </span>
+                              ) : (
+                                playbook.owner_profile?.username ||
+                                playbook.owner_profile?.email ||
+                                "Owner"
+                              )}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <span className="text-sm text-blue-600 font-medium">
+                              Owner & Admin
+                            </span>
+                          </div>
+                          {isOwner && (
+                            <p className="text-xs text-slate-500 mt-1">
+                              Full access & control
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-sm font-medium text-gray-700">
-                        {playbook.last_updated_by === user?.id
-                          ? "You"
-                          : playbook.last_updated_by_profile?.username ||
-                            playbook.last_updated_by_profile?.email ||
-                            "Someone"}
+                    </div>
+                  </div>
+
+                  {/* Collaborators List */}
+                  {playbook.collaborators?.map((collab, index) => (
+                    <div
+                      key={index}
+                      className="bg-gradient-to-r from-emerald-50/80 to-green-50/80 backdrop-blur-sm rounded-xl border border-emerald-200/50 shadow-lg overflow-hidden group hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            {collab.profile.avatar_url ? (
+                              <img
+                                src={collab.profile.avatar_url}
+                                alt={collab.profile.username}
+                                className="w-12 h-12 rounded-full object-cover ring-3 ring-emerald-200"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center ring-3 ring-emerald-200">
+                                <span className="text-white font-bold text-lg">
+                                  {collab.profile.username
+                                    .charAt(0)
+                                    .toUpperCase()}
+                                </span>
+                              </div>
+                            )}
+                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full border-2 border-white flex items-center justify-center shadow-lg">
+                              <Users className="w-3 h-3 text-white" />
+                            </div>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-slate-900 text-base truncate">
+                                {collab.profile.user_id === user?.id ? (
+                                  <span>
+                                    {collab.profile.username}{" "}
+                                    <span className="text-emerald-600 font-medium text-sm">
+                                      (you)
+                                    </span>
+                                  </span>
+                                ) : (
+                                  collab.profile.username
+                                )}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                              <span className="text-sm text-emerald-600 font-medium">
+                                Collaborator
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">
+                              Edit & contribute access
+                            </p>
+                          </div>
+                          {isOwner && collab.profile.user_id !== user?.id && (
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                              <button
+                                onClick={() =>
+                                  setShowRemoveCollaboratorModal({
+                                    show: true,
+                                    collaborator: collab.profile,
+                                  })
+                                }
+                                className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-all duration-200 ml-2"
+                                title="Remove collaborator"
+                              >
+                                <UserMinus className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {playbook.collaborators?.length === 0 && (
+                    <div className="text-center py-8 px-4 bg-slate-50/50 rounded-xl border border-slate-200/50">
+                      <Users className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                      <p className="text-slate-600 font-medium">
+                        No collaborators yet
+                      </p>
+                      <p className="text-sm text-slate-500 mt-1">
+                        {isOwner
+                          ? "Add team members to start collaborating"
+                          : "Only the owner can add collaborators"}
                       </p>
                     </div>
                   )}
                 </div>
+              </div>
 
-                <div className="p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-lg">
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                    <Calendar className="w-4 h-4" />
-                    <span className="font-medium">Created</span>
+              {/* Playbook Settings */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-gray-900 font-semibold">
-                    {formatDate(playbook.created_at)}
-                  </p>
+                  Activity & Settings
+                </h3>
+
+                <div className="space-y-3">
+                  {/* Publication Status */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        {playbook.is_published ? (
+                          <Globe className="w-5 h-5 text-emerald-600" />
+                        ) : (
+                          <EyeOff className="w-5 h-5 text-slate-500" />
+                        )}
+                        <span className="font-semibold text-slate-900">
+                          Publication
+                        </span>
+                      </div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-bold ${
+                          playbook.is_published
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-slate-100 text-slate-700"
+                        }`}
+                      >
+                        {playbook.is_published ? "Published" : "Private"}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600">
+                      {playbook.is_published
+                        ? "Publicly accessible via shared link"
+                        : "Only visible to team members"}
+                    </p>
+                  </div>
+
+                  {/* Last Updated */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Calendar className="w-5 h-5 text-indigo-600" />
+                      <span className="font-semibold text-slate-900">
+                        Last Updated
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium mb-2">
+                      {formatDate(playbook.updated_at)}
+                    </p>
+                    {playbook.last_updated_by && (
+                      <div className="pt-2 border-t border-slate-200">
+                        <p className="text-sm text-slate-600">
+                          Updated by{" "}
+                          <span className="font-medium text-slate-900">
+                            {playbook.last_updated_by === user?.id
+                              ? "You"
+                              : playbook.last_updated_by_profile?.username ||
+                                playbook.last_updated_by_profile?.email ||
+                                "Someone"}
+                          </span>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Created */}
+                  <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-lg p-4">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Clock className="w-5 h-5 text-purple-600" />
+                      <span className="font-semibold text-slate-900">
+                        Created
+                      </span>
+                    </div>
+                    <p className="text-slate-700 font-medium">
+                      {formatDate(playbook.created_at)}
+                    </p>
+                  </div>
+
+                  {/* Quick Actions for Owner */}
+                  {isOwner && (
+                    <div className="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-xl border border-orange-200/50">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                          <AlertTriangle className="w-3 h-3 text-white" />
+                        </div>
+                        <span className="text-sm font-semibold text-orange-900">
+                          Admin Actions
+                        </span>
+                      </div>
+                      <div className="space-y-2">
+                        <button
+                          onClick={handleTogglePublish}
+                          className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-white/60 rounded-lg flex items-center gap-2 transition-colors"
+                        >
+                          {playbook.is_published ? (
+                            <>
+                              <EyeOff className="w-4 h-4" />
+                              Make Private
+                            </>
+                          ) : (
+                            <>
+                              <Globe className="w-4 h-4" />
+                              Publish Publicly
+                            </>
+                          )}
+                        </button>
+                        <button
+                          onClick={handleDeleteClick}
+                          className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete Playbook
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -954,22 +1136,22 @@ export default function CollaborativePlaybookPage() {
       {/* Delete Modal */}
       <AnimatePresence>
         {showDeleteModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-6 border border-white/20"
             >
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Trash2 className="w-5 h-5 text-red-600" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Trash2 className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-xl font-bold text-slate-900">
                     Delete Playbook
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-slate-600">
                     This action cannot be undone
                   </p>
                 </div>
@@ -1018,20 +1200,28 @@ export default function CollaborativePlaybookPage() {
       {/* Add Collaborator Modal */}
       <AnimatePresence>
         {showAddCollaboratorModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-6 border border-white/20"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Add Collaborator
-                </h3>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <UserPlus className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900">
+                      Add Team Member
+                    </h3>
+                    <p className="text-sm text-slate-600">Invite a collaborator to your playbook</p>
+                  </div>
+                </div>
                 <button
                   onClick={() => setShowAddCollaboratorModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-slate-600 p-2 hover:bg-slate-100 rounded-lg transition-all duration-200"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -1129,22 +1319,22 @@ export default function CollaborativePlaybookPage() {
       <AnimatePresence>
         {showRemoveCollaboratorModal.show &&
           showRemoveCollaboratorModal.collaborator && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+                className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-md w-full p-6 border border-white/20"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <UserMinus className="w-5 h-5 text-red-600" />
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <UserMinus className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Remove Collaborator
+                    <h3 className="text-xl font-bold text-slate-900">
+                      Remove Team Member
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-slate-600">
                       This action cannot be undone
                     </p>
                   </div>
