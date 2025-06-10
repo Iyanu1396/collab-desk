@@ -146,12 +146,8 @@ const inspirations = [
 
 export default function DashboardHome() {
   const {
-    user,
     session,
-    profile,
     loading,
-    profileLoading,
-    needsProfile,
     checkSession,
   } = useAuthQuery();
 

@@ -56,7 +56,7 @@ export default function ArticleCard({ article, onEmbed }: ArticleCardProps) {
       setIsCopied(true);
       toast.success("URL copied to clipboard!");
       setTimeout(() => setIsCopied(false), 2000);
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy URL");
     }
   };
@@ -66,7 +66,7 @@ export default function ArticleCard({ article, onEmbed }: ArticleCardProps) {
     try {
       await copyToClipboard(embedCode);
       toast.success("Embed code copied to clipboard!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy embed code");
     }
   };
