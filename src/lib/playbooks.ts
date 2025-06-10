@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { slugify } from "@/lib/utils";
+import { getSafeContent } from "@/lib/bytea-decoder";
 
 export interface Playbook {
   id: string;
@@ -63,7 +64,14 @@ class PlaybookService {
       throw new Error(`Failed to fetch playbooks: ${error.message}`);
     }
 
-    return data as Playbook[];
+    // Decode bytea content for each playbook
+    const decodedData =
+      data?.map((playbook) => ({
+        ...playbook,
+        content: getSafeContent(playbook.content),
+      })) || [];
+
+    return decodedData as Playbook[];
   }
 
   async getPlaybook(slug: string) {
@@ -80,7 +88,13 @@ class PlaybookService {
       throw new Error(`Failed to fetch playbook: ${error.message}`);
     }
 
-    return data as Playbook;
+    // Decode bytea content
+    const decodedData = {
+      ...data,
+      content: getSafeContent(data.content),
+    };
+
+    return decodedData as Playbook;
   }
 
   async createPlaybook(data: CreatePlaybookData) {
@@ -92,8 +106,6 @@ class PlaybookService {
       throw new Error("User not authenticated");
     }
 
-  
-
     const { data: playbook, error } = await this.supabase
       .from("playbooks")
       .insert({
@@ -102,7 +114,6 @@ class PlaybookService {
         description: data.description,
         published: data.published || false,
         owner_id: user.id,
-       
       })
       .select("*")
       .single();
@@ -111,7 +122,13 @@ class PlaybookService {
       throw new Error(`Failed to create playbook: ${error.message}`);
     }
 
-    return playbook as Playbook;
+    // Decode bytea content
+    const decodedPlaybook = {
+      ...playbook,
+      content: getSafeContent(playbook.content),
+    };
+
+    return decodedPlaybook as Playbook;
   }
 
   async updatePlaybook(id: string, data: UpdatePlaybookData) {
@@ -141,8 +158,6 @@ class PlaybookService {
       updated_at: new Date().toISOString(),
     };
 
-   
-
     const { data: playbook, error } = await this.supabase
       .from("playbooks")
       .update(updateData)
@@ -154,7 +169,13 @@ class PlaybookService {
       throw new Error(`Failed to update playbook: ${error.message}`);
     }
 
-    return playbook as Playbook;
+    // Decode bytea content
+    const decodedPlaybook = {
+      ...playbook,
+      content: getSafeContent(playbook.content),
+    };
+
+    return decodedPlaybook as Playbook;
   }
 
   async deletePlaybook(id: string) {

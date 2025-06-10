@@ -33,16 +33,16 @@ const navigation = [
     description: "Create and manage your personal playbooks",
   },
   {
+    name: "Collaborative",
+    href: "/dashboard/collaborative",
+    icon: Users,
+    description: "Team playbooks and collaboration",
+  },
+  {
     name: "CMS Explorer",
     href: "/dashboard/cms",
     icon: Globe,
     description: "Browse and embed external content",
-  },
-  {
-    name: "Collaborators",
-    href: "/dashboard/collaborators",
-    icon: Users,
-    description: "Manage team members",
   },
   {
     name: "Settings",
@@ -58,6 +58,12 @@ const quickActions = [
     href: "/dashboard/playbooks/new",
     icon: PlusCircle,
     color: "bg-blue-500 hover:bg-blue-600",
+  },
+  {
+    name: "New Collaboration",
+    href: "/dashboard/collaborative/new",
+    icon: Users,
+    color: "bg-purple-500 hover:bg-purple-600",
   },
   {
     name: "Browse CMS",

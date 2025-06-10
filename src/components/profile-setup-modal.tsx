@@ -9,11 +9,13 @@ import {
   X,
   Check,
   AlertCircle,
-  Loader2,
+
 } from "lucide-react";
 import Button from "./ui/button";
 import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
+import { useAuthQuery } from "@/hooks/use-auth-query";
+
 
 interface ProfileSetupModalProps {
   isOpen: boolean;
@@ -35,6 +37,8 @@ export default function ProfileSetupModal({
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
+  const { user } = useAuthQuery();
+
 
   const validateUsername = (value: string) => {
     if (!value.trim()) {
@@ -140,6 +144,7 @@ export default function ProfileSetupModal({
         user_id: userId,
         username: username.trim(),
         avatar_url: avatarUrl,
+        email: user?.email,
       });
 
       if (profileError) {
