@@ -5,7 +5,7 @@ import Suggestion, {
   SuggestionKeyDownProps,
 } from "@tiptap/suggestion";
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FileText,
   Image,
@@ -13,7 +13,6 @@ import {
   Table,
   Quote,
   Link,
-  Calendar,
   Globe,
   Search,
   Heading1,
@@ -185,7 +184,7 @@ const SlashCommandsList = forwardRef((props: SuggestionProps, ref) => {
       title: "CMS Articles",
       description: "Search and embed Dev.to articles",
       icon: <Globe className="w-4 h-4" />,
-      command: async (_editor: Editor, _range: Range) => {
+      command: async () => {
         setLoadingCms(true);
         try {
           const response = await fetch("/api/cms/articles?limit=10");
