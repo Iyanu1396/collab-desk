@@ -2,20 +2,11 @@
 
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import {
-  User,
-  Camera,
-  Upload,
-  X,
-  Check,
-  AlertCircle,
-
-} from "lucide-react";
+import { User, Camera, Upload, X, Check, AlertCircle } from "lucide-react";
 import Button from "./ui/button";
 import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
 import { useAuthQuery } from "@/hooks/use-auth-query";
-
 
 interface ProfileSetupModalProps {
   isOpen: boolean;
@@ -38,7 +29,6 @@ export default function ProfileSetupModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const { user } = useAuthQuery();
-
 
   const validateUsername = (value: string) => {
     if (!value.trim()) {
@@ -93,7 +83,7 @@ export default function ProfileSetupModal({
       const fileExt = file.name.split(".").pop();
       const fileName = `${userId}_${Date.now()}.${fileExt}`;
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("avatars")
         .upload(fileName, file, {
           cacheControl: "3600",
@@ -129,7 +119,7 @@ export default function ProfileSetupModal({
     setErrors({});
 
     try {
-      let avatarUrl = null;
+      let avatarUrl: string | null = null;
 
       if (avatar) {
         avatarUrl = await uploadAvatar(avatar);

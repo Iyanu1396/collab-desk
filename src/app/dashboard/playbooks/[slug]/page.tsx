@@ -90,11 +90,11 @@ export default function PlaybookViewPage() {
     router.push(`/dashboard/playbooks/${slug}/edit`);
   };
 
-  const handleDeleteClick = () => {
-    setShowDropdown(false);
-    setShowDeleteModal(true);
-    setDeleteConfirmText("");
-  };
+  // const handleDeleteClick = () => {
+  //   setShowDropdown(false);
+  //   setShowDeleteModal(true);
+  //   setDeleteConfirmText("");
+  // };
 
   const handleDeleteConfirm = async () => {
     if (!playbook || deleteConfirmText.toLowerCase() !== "delete") return;
@@ -713,7 +713,7 @@ export default function PlaybookViewPage() {
               {/* Content */}
               <div className="p-6">
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Are you sure you want to delete <span className="font-semibold text-gray-900">"{playbook?.title}"</span>? This action cannot be undone.
+                  Are you sure you want to delete <span className="font-semibold text-gray-900">&quot;{playbook?.title}&quot;</span>? This action cannot be undone.
                 </p>
                 
                 <div className="mb-6">

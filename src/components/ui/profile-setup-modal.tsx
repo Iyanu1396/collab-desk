@@ -130,7 +130,7 @@ export default function ProfileSetupModal({
     setErrors({});
 
     try {
-      let avatarUrl = null;
+      let avatarUrl: string | null = null;
 
       // Upload avatar if provided
       if (avatar) {

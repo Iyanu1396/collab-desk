@@ -62,7 +62,7 @@ export default function LogoutModal({
 
             {/* Description */}
             <p className="text-gray-600 mb-6">
-              Are you sure you want to sign out? You'll need to sign in again to
+              Are you sure you want to sign out? You&apos;ll need to sign in again to
               access your playbooks and continue collaborating.
             </p>
 
