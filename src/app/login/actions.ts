@@ -9,7 +9,7 @@ export async function signInWithOtp(email: string) {
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: "http://localhost:3000/auth/callback" },
+    options: { emailRedirectTo: "https://collab-desk-three.vercel.app/auth/callback" },
   });
 
   return error ? { error: error.message } : { success: true };
