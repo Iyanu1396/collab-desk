@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CollabDeck - Collaborative Playbook Platform
 
-## Getting Started
+## System Architecture
 
-First, run the development server:
+### Component Diagram
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```mermaid
+graph TD
+    A[Next.js Frontend] --> B[Supabase]
+    A --> C[Dev.to API]
+    B --> D[(PostgreSQL)]
+    B --> E[Realtime]
+    B --> F[Storage]
+    D --> G[Row-Level Security]
+    E --> H[Presence]
+    E --> I[Yjs Sync]
+    
+    subgraph Editor
+        A --> J[TipTap]
+        J --> K[Yjs]
+        K --> I
+    end
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Key Technologies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Component | Technology |
+|-----------|------------|
+| Frontend | Next.js 15 (App Router), React 19 |
+| Database | Supabase PostgreSQL |
+| Realtime | Yjs + Supabase Realtime |
+| Editor | TipTap with collaborative plugins |
+| Auth | Supabase Magic Links |
+| CMS | Dev.to API |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Trade-Offs Made
 
-## Learn More
+### 1. Realtime Sync Implementation
+- **Chose:** Yjs + Supabase Realtime
+- **Alternative:** Socket.io custom server
+- **Reason:** Faster implementation with built-in CRDT support, though less customizable
 
-To learn more about Next.js, take a look at the following resources:
+### 2. Authentication
+- **Chose:** Email Magic Links
+- **Alternative:** OAuth providers
+- **Reason:** Lower barrier for user testing, though less social login convenience
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Content Storage
+- **Chose:** BYTEA for Yjs binary
+- **Alternative:** JSON documents
+- **Reason:** Better performance for collaborative editing, though harder to debug
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Future Work
 
-## Deploy on Vercel
+### High Priority
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 1. Public Comments System
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```mermaid
+sequenceDiagram
+    Anonymous->>API: POST /comments
+    API->>DB: Store with rate limits
+    DB->>Playbook: Attach to public playbook
+```
+
+#### 2. View Tracking
+```sql
+CREATE TABLE playbook_views (
+  playbook_id UUID REFERENCES playbooks,
+  viewer_id UUID NULL, -- Null for anonymous
+  viewed_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+#### 2. Markdown Support
+- Implement TipTap Markdown extension
+- Add dual-preview editor
+- Support GitHub-flavored markdown
+
+### Mid Priority
+- Collaborative diagram editing
+- Version history with diffs
+- Mobile-optimized editor
+
+### Nice-to-Have
+- AI-powered content suggestions
+- PDF/Word export
+- Template gallery
+
+## Development Setup
+
+1. Clone repo
+2. `npm install`  
+3. Set up `.env` with Supabase credentials
+4. Run database migrations:
+   ```bash
+   npx supabase db push
+   ```
+5. Start dev server:
+   ```bash
+   npm run dev
+   ```
+
+
+
